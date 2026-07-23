@@ -4,7 +4,7 @@
   --card-border: rgba(255, 255, 255, 0.08);
   --text-primary: #f3f4f6;
   --text-secondary: #9ca3af;
-  --accent: #aa3bff;
+  --accent: #8b9589;
   --accent-glow: rgba(170, 59, 255, 0.35);
 }
 
@@ -20,10 +20,45 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow-x: hidden;
+  padding: 2rem 0;
 }
+
+#datepicker {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#datepicker:hover, #datepicker:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#datepicker::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#datepicker::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
 
 #app {
   width: 100%;
@@ -47,7 +82,6 @@ header h1 {
   font-weight: 800;
   letter-spacing: -0.05em;
   background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
 }
@@ -162,7 +196,6 @@ header .subtitle {
   opacity: 0.8;
 }
 
-/* Error Card Styling */
 .error-card {
   background: rgba(239, 68, 68, 0.05);
   border: 1px solid rgba(239, 68, 68, 0.2);
@@ -199,11 +232,10 @@ header .subtitle {
   border-radius: 8px;
   font-family: monospace;
   font-size: 0.9rem;
-  color: #f87171;
+  color: #e41a1a;
   word-break: break-all;
 }
 
-/* Animations */
 @keyframes spin {
   to {
     transform: rotate(360deg);

@@ -1,4 +1,16 @@
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import SideRays from './SideRays.jsx'
 import './style.css'
+
+const sideRaysRoot = document.getElementById('siderays-root')
+if (sideRaysRoot) {
+  createRoot(sideRaysRoot).render(
+    <React.StrictMode>
+      <SideRays speed={2.5} rayColor1="#EAB308" rayColor2="#96c8ff" />
+    </React.StrictMode>
+  )
+}
 
 const apiKey = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY'
 const app = document.querySelector('#app')

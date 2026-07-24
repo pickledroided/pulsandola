@@ -7,8 +7,58 @@
   </head>
   <body>
     <div id="siderays-root" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
-    <input type="date" id="datepicker"/>
-    <div id="app"></div>
+    
+    <div class="layout-container">
+      <!-- Left Sidebar (20%) -->
+      <aside class="left-sidebar">
+        <div class="widget" id="nasa-widget">
+          <div class="widget-loader">Caricamento NASA...</div>
+        </div>
+        <div class="widget" id="animal-fact-widget">
+          <div class="widget-loader">Caricamento...</div>
+        </div>
+        <div class="widget placeholder-widget">Widget 3 (Futuro)</div>
+      </aside>
+
+      <!-- Main Content (60%) -->
+      <main class="main-content">
+        <form id="search-form" action="https://www.google.com/search" method="GET">
+          <div class="search-bar">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" name="q" placeholder="Cerca su Google..." autocomplete="off" required />
+          </div>
+        </form>
+
+        <div class="bookmarks-section">
+          <h2>Preferiti</h2>
+          <div id="bookmarks-grid" class="bookmarks-grid">
+            <!-- Bookmarks will be injected here -->
+            <button id="add-bookmark-btn" class="bookmark-item add-btn" aria-label="Aggiungi preferito">
+              <span class="plus-icon">+</span>
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- Right Sidebar (20%) -->
+      <aside class="right-sidebar">
+        <div class="widget blackjack-widget" id="blackjack-container" style="display:none"></div>
+      </aside>
+    </div>
+
+    <!-- Modals -->
+    <div id="add-bookmark-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Aggiungi Preferito</h3>
+        <input type="text" id="bm-name" placeholder="Nome (es. YouTube)" />
+        <input type="url" id="bm-url" placeholder="URL (es. https://youtube.com)" />
+        <div class="modal-actions">
+          <button id="bm-cancel" class="btn-secondary">Annulla</button>
+          <button id="bm-save" class="btn-primary">Salva</button>
+        </div>
+      </div>
+    </div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

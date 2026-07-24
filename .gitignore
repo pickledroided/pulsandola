@@ -7,11 +7,12 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-supersecret.env
+.env
 node_modules
 dist
 dist-ssr
 *.local
+.opencode.json
 
 # Editor directories and files
 .vscode/*

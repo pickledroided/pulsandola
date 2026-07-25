@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap');
 
 :root {
   --bg-gradient: radial-gradient(circle at center, #1b122c 0%, #080510 100%);
@@ -20,13 +20,91 @@ body {
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg-gradient);
   color: var(--text-primary);
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  overflow-x: hidden;
-  padding: 2rem 0;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Background Selector */
+.bg-selector {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  font-family: inherit;
+}
+.bg-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+.bg-dropdown-toggle:hover {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.7);
+}
+.bg-arrow {
+  font-size: 0.6rem;
+  transition: transform 0.2s;
+}
+.bg-dropdown-toggle.open .bg-arrow {
+  transform: rotate(180deg);
+}
+.bg-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 160px;
+  background: rgba(20,20,30,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.bg-dropdown-menu.open {
+  display: block;
+}
+.bg-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.5rem 0.8rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.8rem;
+  text-align: left;
+  transition: background 0.15s;
+}
+.bg-dropdown-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+.bg-dropdown-item.active {
+  background: rgba(170, 59, 255, 0.15);
+  color: var(--accent);
+}
+.bg-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 /* Layout Container */
@@ -36,8 +114,8 @@ body {
   gap: 2rem;
   width: 100%;
   max-width: 1400px;
-  height: 90vh;
-  padding: 2rem;
+  height: 100vh;
+  padding: 1rem 2rem;
 }
 
 @media (max-width: 1024px) {
@@ -74,7 +152,8 @@ body {
 .left-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  padding-top: 1.5rem;
 }
 
 .placeholder-widget {
@@ -89,14 +168,12 @@ body {
 
 #nasa-widget {
   padding: 0;
-  flex: 1;
-  min-height: 250px;
+  flex: 4;
 }
 
 #animal-fact-widget {
   padding: 0;
-  flex: 1;
-  min-height: 220px;
+  flex: 4;
 }
 
 .animal-fact-content {
@@ -107,7 +184,7 @@ body {
 
 .animal-fact-image {
   width: 100%;
-  height: 120px;
+  height: 140px;
   object-fit: cover;
   border-radius: 0;
 }
@@ -136,12 +213,26 @@ body {
 
 .nasa-media {
   width: 100%;
-  height: 150px;
+  height: 160px;
   object-fit: cover;
 }
 
 .nasa-info {
   padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.15) transparent;
+}
+.nasa-info::-webkit-scrollbar {
+  width: 4px;
+}
+.nasa-info::-webkit-scrollbar-track {
+  background: transparent;
+}
+.nasa-info::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 2px;
 }
 .nasa-date {
   font-size: 0.75rem;
@@ -152,6 +243,23 @@ body {
   font-size: 1rem;
   margin-top: 0.25rem;
   line-height: 1.2;
+}
+.nasa-explanation {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.nasa-copyright {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 0.5rem;
+  opacity: 0.7;
 }
 
 .main-content {
@@ -280,50 +388,66 @@ body {
   flex-direction: column;
 }
 .blackjack-widget {
-  flex: 1;
+  width: 300px;
+  padding: 0.8rem;
+  height: auto;
   text-align: center;
+  margin-top: auto;
+  margin-left: auto;
+  overflow: visible;
+  font-family: 'Press Start 2P', monospace;
+  animation: bjGlow 3s ease-in-out infinite;
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 8px var(--accent-glow),
+    2px 2px 0 #000,
+    -2px -2px 0 #444;
 }
 .blackjack-widget h2 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
   color: var(--accent);
-}
-#bj-status {
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  min-height: 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 .bj-hands {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 0.25rem;
   flex: 1;
+  justify-content: center;
 }
 .bj-hand span {
-  font-size: 0.85rem;
+  font-size: 0.5rem;
   color: var(--text-secondary);
-  display: block;
-  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 .cards-container {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 60px;
+  gap: 0.25rem;
+  min-height: 50px;
 }
 .bj-card {
-  width: 45px;
-  height: 65px;
+  width: 38px;
+  height: 55px;
   background: white;
-  border-radius: 4px;
+  border-radius: 0;
   color: black;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-size: 0.7rem;
+  font-family: 'Press Start 2P', monospace;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  image-rendering: pixelated;
+}
+.bj-card.bj-card-entry {
+  animation: cardSlideIn 0.3s ease-out;
 }
 .bj-card.red {
   color: #ef4444;
@@ -341,22 +465,34 @@ body {
 
 .bj-controls {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 0.25rem;
   justify-content: center;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
 }
 .bj-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #222;
+  border: 2px solid #555;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
+  transition: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  box-shadow: 2px 2px 0 #000;
+  image-rendering: pixelated;
 }
 .bj-btn:not(:disabled):hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #000;
+}
+.bj-btn:not(:disabled):active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #000;
 }
 .bj-btn:disabled {
   opacity: 0.5;
@@ -366,7 +502,45 @@ body {
   background: var(--accent);
   border-color: var(--accent);
   color: #000;
-  font-weight: bold;
+}
+
+@keyframes bjGlow {
+  0%, 100% { box-shadow: 0 0 8px var(--accent-glow), 2px 2px 0 #000, -2px -2px 0 #444; }
+  50% { box-shadow: 0 0 16px var(--accent-glow), 2px 2px 0 #000, -2px -2px 0 #444; }
+}
+
+@keyframes cardSlideIn {
+  from { opacity: 0; transform: translateX(15px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes bjFlash {
+  0%, 100% { border-color: var(--accent); }
+  50% { border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+}
+.blackjack-widget.bj-win {
+  animation: bjFlash 0.5s ease-in-out 3;
+}
+
+@keyframes bjShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px) rotate(-1deg); }
+  40% { transform: translateX(4px) rotate(1deg); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+.blackjack-widget.bj-lose {
+  animation: bjShake 0.5s ease-in-out;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4), 2px 2px 0 #000, -2px -2px 0 #444 !important;
+}
+
+@keyframes cardReveal {
+  from { transform: rotateY(180deg) scaleX(0.5); opacity: 0; }
+  to { transform: rotateY(0deg) scaleX(1); opacity: 1; }
+}
+.bj-card.bj-reveal {
+  animation: cardReveal 0.3s ease-out;
 }
 
 /* Modals */

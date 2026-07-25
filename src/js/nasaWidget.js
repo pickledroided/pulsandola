@@ -35,6 +35,8 @@ export function initNasaWidget() {
           <div class="nasa-info">
             <span class="nasa-date">${data.date}</span>
             <h4 class="nasa-title">${data.title}</h4>
+            <p class="nasa-explanation">${data.explanation}</p>
+            ${data.copyright ? `<span class="nasa-copyright">© ${data.copyright}</span>` : ''}
           </div>
         </div>
       `;
@@ -45,7 +47,6 @@ export function initNasaWidget() {
         <div class="nasa-error" style="padding: 1rem; color: #ef4444; text-align: center;">
           <h4 style="margin-bottom: 0.5rem;">Errore APOD</h4>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">${err.message}</p>
-          <span style="font-size: 0.75rem;">(Se usi DEMO_KEY potresti aver superato il limite di richieste)</span>
         </div>
       `;
     });

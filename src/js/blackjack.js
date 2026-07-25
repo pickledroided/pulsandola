@@ -25,7 +25,6 @@ export function initBlackjack() {
         deck.push({ suit, value });
       }
     }
-    // Fisher-Yates shuffle
     for (let i = deck.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [deck[i], deck[j]] = [deck[j], deck[i]];
@@ -52,6 +51,8 @@ export function initBlackjack() {
     return score;
   }
 
+  const widget = document.getElementById('blackjack-container');
+
   function renderCard(card, hidden = false) {
     const div = document.createElement('div');
     div.className = 'bj-card';
@@ -66,70 +67,102 @@ export function initBlackjack() {
     return div;
   }
 
-  function renderHands(hideDealerSecond = true) {
-    dealerCardsEl.innerHTML = '';
-    playerCardsEl.innerHTML = '';
-
-    playerHand.forEach(card => playerCardsEl.appendChild(renderCard(card)));
-    
-    dealerHand.forEach((card, index) => {
-      if (index === 1 && hideDealerSecond) {
-        dealerCardsEl.appendChild(renderCard(card, true));
-      } else {
-        dealerCardsEl.appendChild(renderCard(card));
-      }
-    });
-
+  function updateScores(hideDealerSecond) {
     playerScoreEl.textContent = calculateScore(playerHand);
-    if (hideDealerSecond) {
-      dealerScoreEl.textContent = getCardValue(dealerHand[0]);
-    } else {
-      dealerScoreEl.textContent = calculateScore(dealerHand);
-    }
+    dealerScoreEl.textContent = hideDealerSecond !== false
+      ? getCardValue(dealerHand[0]) + '?'
+      : calculateScore(dealerHand);
   }
 
   function startGame() {
+    widget.classList.remove('bj-win', 'bj-lose');
     createDeck();
     dealerHand = [deck.pop(), deck.pop()];
     playerHand = [deck.pop(), deck.pop()];
     gameOver = false;
-    
+
     hitBtn.disabled = false;
     standBtn.disabled = false;
     startBtn.style.display = 'none';
     statusEl.textContent = 'Tocca a te...';
-    
-    renderHands();
 
-    if (calculateScore(playerHand) === 21) {
-      endGame(calculateScore(dealerHand) === 21 ? 'Pareggio!' : 'Blackjack! Hai vinto!');
+    dealerCardsEl.innerHTML = '';
+    playerCardsEl.innerHTML = '';
+    dealerScoreEl.textContent = '?';
+    playerScoreEl.textContent = '0';
+
+    const cards = [
+      { hand: 'player', card: playerHand[0], hidden: false },
+      { hand: 'dealer', card: dealerHand[0], hidden: false },
+      { hand: 'player', card: playerHand[1], hidden: false },
+      { hand: 'dealer', card: dealerHand[1], hidden: true },
+    ];
+    cards.forEach((c, i) => {
+      setTimeout(() => {
+        const el = renderCard(c.card, c.hidden);
+        el.classList.add('bj-card-entry');
+        setTimeout(() => el.classList.remove('bj-card-entry'), 300);
+        (c.hand === 'player' ? playerCardsEl : dealerCardsEl).appendChild(el);
+        updateScores(true);
+      }, i * 250);
+    });
+
+    setTimeout(() => {
+      if (calculateScore(playerHand) === 21) {
+        endGame(calculateScore(dealerHand) === 21 ? 'Pareggio!' : 'Blackjack! Hai vinto!');
+      }
+    }, cards.length * 250 + 100);
+  }
+
+  function animateLastCard(container) {
+    const last = container.lastElementChild;
+    if (last) {
+      last.classList.add('bj-card-entry');
+      setTimeout(() => last.classList.remove('bj-card-entry'), 300);
     }
   }
 
   function hit() {
     if (gameOver) return;
     playerHand.push(deck.pop());
-    renderHands();
-    
-    if (calculateScore(playerHand) > 21) {
-      endGame('Hai sballato! Banco vince.');
+    playerCardsEl.appendChild(renderCard(playerHand[playerHand.length - 1]));
+    animateLastCard(playerCardsEl);
+    updateScores(true);
+
+    if (calculateScore(playerHand) >= 21) {
+      if (calculateScore(playerHand) > 21) {
+        endGame('Hai sballato! Banco vince.');
+      } else {
+        endGame('Hai vinto!');
+      }
     }
   }
 
   function stand() {
     if (gameOver) return;
     gameOver = true;
-    
-    // Dealer's turn
+
     let dealerScore = calculateScore(dealerHand);
-    renderHands(false); // Reveal hidden card
+    const hiddenCard = dealerCardsEl.querySelector('.hidden-card');
+    if (hiddenCard) {
+      const idx = dealerHand.findIndex((c, i) => i === 1);
+      if (idx !== -1) {
+        const revealed = renderCard(dealerHand[1], false);
+        revealed.classList.add('bj-reveal');
+        setTimeout(() => revealed.classList.remove('bj-reveal'), 300);
+        hiddenCard.replaceWith(revealed);
+      }
+    }
+    updateScores(false);
 
     function dealerPlay() {
       if (dealerScore < 17) {
         setTimeout(() => {
           dealerHand.push(deck.pop());
           dealerScore = calculateScore(dealerHand);
-          renderHands(false);
+          dealerCardsEl.appendChild(renderCard(dealerHand[dealerHand.length - 1]));
+          animateLastCard(dealerCardsEl);
+          updateScores(false);
           dealerPlay();
         }, 800);
       } else {
@@ -145,7 +178,7 @@ export function initBlackjack() {
         }
       }
     }
-    
+
     statusEl.textContent = 'Turno del banco...';
     hitBtn.disabled = true;
     standBtn.disabled = true;
@@ -159,7 +192,14 @@ export function initBlackjack() {
     standBtn.disabled = true;
     startBtn.style.display = 'inline-block';
     startBtn.textContent = 'Rigioca';
-    renderHands(false);
+    widget.classList.remove('bj-win', 'bj-lose');
+    if (message.includes('vinto') || message.includes('Blackjack')) {
+      widget.classList.add('bj-win');
+      setTimeout(() => widget.classList.remove('bj-win'), 1500);
+    } else if (message.includes('Banco vince') || message.includes('sballato')) {
+      widget.classList.add('bj-lose');
+      setTimeout(() => widget.classList.remove('bj-lose'), 1500);
+    }
   }
 
   startBtn.addEventListener('click', startGame);

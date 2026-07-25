@@ -6,21 +6,21 @@
     <title>Pulsandola</title>
   </head>
   <body>
+    <div id="dither-bg" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:-2;"></div>
     <div id="siderays-root" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none;"></div>
     
+    <div class="bg-selector" id="bg-selector"></div>
     <div class="layout-container">
-      <!-- Left Sidebar (20%) -->
       <aside class="left-sidebar">
         <div class="widget" id="nasa-widget">
           <div class="widget-loader">Caricamento NASA...</div>
         </div>
         <div class="widget" id="animal-fact-widget">
-          <div class="widget-loader">Caricamento...</div>
+          <div class="widget-loader">Caricamento geopask...</div>
         </div>
-        <div class="widget placeholder-widget">Widget 3 (Futuro)</div>
+        <div class="widget placeholder-widget">Widget 3</div>
       </aside>
 
-      <!-- Main Content (60%) -->
       <main class="main-content">
         <form id="search-form" action="https://www.google.com/search" method="GET">
           <div class="search-bar">
@@ -32,7 +32,6 @@
         <div class="bookmarks-section">
           <h2>Preferiti</h2>
           <div id="bookmarks-grid" class="bookmarks-grid">
-            <!-- Bookmarks will be injected here -->
             <button id="add-bookmark-btn" class="bookmark-item add-btn" aria-label="Aggiungi preferito">
               <span class="plus-icon">+</span>
             </button>
@@ -40,13 +39,29 @@
         </div>
       </main>
 
-      <!-- Right Sidebar (20%) -->
       <aside class="right-sidebar">
-        <div class="widget blackjack-widget" id="blackjack-container" style="display:none"></div>
+        <div class="widget blackjack-widget" id="blackjack-container">
+          <h2>Blackjack</h2>
+          <div id="bj-status" style="display:none">Inizia una partita!</div>
+          <div class="bj-hands">
+            <div class="bj-hand">
+              <span>Banco: <span id="bj-dealer-score">?</span></span>
+              <div id="bj-dealer-cards" class="cards-container"></div>
+            </div>
+            <div class="bj-hand">
+              <span>Tu: <span id="bj-player-score">0</span></span>
+              <div id="bj-player-cards" class="cards-container"></div>
+            </div>
+          </div>
+          <div class="bj-controls">
+            <button id="bj-hit-btn" class="bj-btn" disabled>Carta</button>
+            <button id="bj-stand-btn" class="bj-btn" disabled>Stai</button>
+            <button id="bj-start-btn" class="bj-btn primary">Nuova Partita</button>
+          </div>
+        </div>
       </aside>
     </div>
 
-    <!-- Modals -->
     <div id="add-bookmark-modal" class="modal hidden">
       <div class="modal-content">
         <h3>Aggiungi Preferito</h3>

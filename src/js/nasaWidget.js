@@ -1,7 +1,7 @@
 const FALLBACK = {
   date: '2026-07-25',
   title: 'Tranquility and Serenity',
-  url: 'https://apod.nasa.gov/apod/image/2607/TranquilitySerenity1024c.jpg',
+  url: import.meta.env.BASE_URL + 'fallback-apod.jpg',
   explanation: 'The Seas of Tranquility and Serenity are calm today. They are actually lunar maria, ancient lava flows filling in large impact basins on the Moon. Also known by Latin names Mare Tranquillitatis and Mare Serenitatis, the smooth dark lunar seas are in stark contrast to the bright cratered lunar highlands surrounding them.',
   copyright: 'Nyêrdson Ferreira',
 };

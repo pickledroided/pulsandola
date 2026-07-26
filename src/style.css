@@ -159,6 +159,7 @@ body {
 #nasa-widget {
   padding: 0;
   flex: 0 0 auto;
+  min-height: 200px;
 }
 
 #animal-fact-widget {

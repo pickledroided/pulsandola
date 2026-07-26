@@ -1,6 +1,6 @@
 # Pulsandola
 
-This is a project that was made using HTML, CSS, JS, React and some AI (Deepseek v4 Flash) that helped me debug and fix things that didn't work. It started as a simple homepage with a NASA APOD widget and turned into a full dashboard with bookmarks, animal facts that my friend always says, blackjack, and customizable backgrounds. 
+This is a project that was made using HTML, CSS, JS, React and some AI (Deepseek v4 Flash). It started as a simple homepage with a NASA APOD widget and turned into a full dashboard with bookmarks, animal facts that my friend always says, blackjack, weather and customizable backgrounds. 
 
 https://pickledroided.github.io/pulsandola/
 

@@ -37,6 +37,7 @@ import { initNasaWidget } from './js/nasaWidget.js'
 import { initBookmarks } from './js/bookmarks.js'
 import { initBlackjack } from './js/blackjack.js'
 import { initBackgrounds } from './js/backgrounds.js'
+import { initWeather } from './js/weatherWidget.js'
 
 document.addEventListener('DOMContentLoaded', () => {
   initAnimalFacts();
@@ -44,4 +45,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initBookmarks();
   initBlackjack();
   initBackgrounds();
+  initWeather();
 });

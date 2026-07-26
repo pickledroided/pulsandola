@@ -1,5 +1,7 @@
 const backgrounds = [
   { id: 'galassia', name: 'Galassia', gradient: 'radial-gradient(circle at center, #1b122c 0%, #080510 100%)', type: 'gradient' },
+  { id: 'galaxy-nero', name: 'Galaxy Nero', gradient: '#000', type: 'gradient' },
+  { id: 'nero', name: 'Nero', gradient: '#000', type: 'gradient', hideSiderays: true },
   { id: 'dither', name: 'Dither', type: 'dither' },
 ]
 
@@ -21,7 +23,7 @@ function applyBg(id, updateToggle = true) {
 
   if (bg.type === 'gradient') {
     document.body.style.background = bg.gradient
-    if (sideraysRoot) sideraysRoot.style.display = ''
+    if (sideraysRoot) sideraysRoot.style.display = bg.hideSiderays ? 'none' : ''
     if (ditherRoot) ditherRoot.style.display = 'none'
   } else if (bg.type === 'dither') {
     document.body.style.background = '#000'

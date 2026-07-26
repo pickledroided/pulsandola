@@ -2,7 +2,7 @@ const API_KEY = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
 
 function fetchApod(date) {
   const baseUrl = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${date ? `&date=${date}` : ''}`;
-  const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(baseUrl)}`;
+  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`;
 
   return fetch(baseUrl).then(async res => {
     if (!res.ok) {

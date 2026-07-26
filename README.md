@@ -18,7 +18,7 @@ started from the stardance mission to give a pulse to a website and it was a ran
 
 ## Credits
 
-- Shoutout to DeepSeek v4 FLASH for helping when the code didn't work (hopefully it works now)
+- Shoutout to DeepSeek v4 FLASH for helping when the code didn't work and all the times the apis didn't work (hopefully they work now)
 - [Reactbits](https://reactbits.dev) for the Dither and galaxy background
 - [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) for keeping the code minimal
 - NASA for the APOD API

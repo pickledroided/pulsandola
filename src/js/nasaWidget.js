@@ -1,23 +1,13 @@
-const API_KEY = import.meta.env.VITE_NASA_API_KEY || 'DEMO_KEY';
+const API_KEY = 'DEMO_KEY';
 
 function fetchApod(date) {
-  const baseUrl = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${date ? `&date=${date}` : ''}`;
-  const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(baseUrl)}`;
-
-  return fetch(baseUrl).then(async res => {
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${date ? `&date=${date}` : ''}`;
+  return fetch(url).then(async res => {
     if (!res.ok) {
       const errData = await res.json().catch(() => ({}));
       throw new Error(errData.msg || errData.error?.message || `HTTP error! status: ${res.status}`);
     }
     return res.json();
-  }).catch(err => {
-    if (err instanceof TypeError) {
-      return fetch(proxyUrl).then(r => {
-        if (!r.ok) throw new Error(`HTTP error! status: ${r.status}`);
-        return r.json();
-      });
-    }
-    throw err;
   });
 }
 

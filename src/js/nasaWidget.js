@@ -2,13 +2,8 @@ const API_KEY = 'DEMO_KEY';
 
 function fetchApod(date) {
   const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${date ? `&date=${date}` : ''}`;
-  return fetch(url).then(async res => {
-    if (!res.ok) {
-      const errData = await res.json().catch(() => ({}));
-      throw new Error(errData.msg || errData.error?.message || `HTTP error! status: ${res.status}`);
-    }
-    return res.json();
-  });
+  return fetch(url).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.msg || e.error?.message || `HTTP ${r.status}`); }))
+    .catch(() => fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`).then(r => r.ok ? r.json() : Promise.reject()));
 }
 
 export function initNasaWidget() {

@@ -1,9 +1,23 @@
-const API_KEY = 'DEMO_KEY';
+const FALLBACK = {
+  date: '2026-07-25',
+  title: 'Tranquility and Serenity',
+  url: 'https://apod.nasa.gov/apod/image/2607/TranquilitySerenity1024c.jpg',
+  explanation: 'The Seas of Tranquility and Serenity are calm today. They are actually lunar maria, ancient lava flows filling in large impact basins on the Moon. Also known by Latin names Mare Tranquillitatis and Mare Serenitatis, the smooth dark lunar seas are in stark contrast to the bright cratered lunar highlands surrounding them.',
+  copyright: 'Nyêrdson Ferreira',
+};
 
-function fetchApod(date) {
-  const url = `https://api.nasa.gov/planetary/apod?api_key=${API_KEY}${date ? `&date=${date}` : ''}`;
-  return fetch(url).then(r => r.ok ? r.json() : r.json().then(e => { throw new Error(e.msg || e.error?.message || `HTTP ${r.status}`); }))
-    .catch(() => fetch(`https://corsproxy.io/?url=${encodeURIComponent(url)}`).then(r => r.ok ? r.json() : Promise.reject()));
+function renderApod(container, data) {
+  container.innerHTML = `
+    <div class="nasa-content">
+      <img src="${data.url}" alt="${data.title}" class="nasa-media" />
+      <div class="nasa-info">
+        <span class="nasa-date">${data.date}</span>
+        <h4 class="nasa-title">${data.title}</h4>
+        <p class="nasa-explanation">${data.explanation}</p>
+        ${data.copyright ? `<span class="nasa-copyright">© ${data.copyright}</span>` : ''}
+      </div>
+    </div>
+  `;
 }
 
 export function initNasaWidget() {
@@ -11,38 +25,9 @@ export function initNasaWidget() {
   if (!container) return;
 
   const today = new Date().toISOString().split('T')[0];
-  const knownDate = '2024-07-24';
 
-  fetchApod(today)
-    .catch(() => fetchApod(knownDate))
-    .then(data => {
-      if (!data) return;
-      let mediaHtml = '';
-      if (data.media_type === 'image') {
-        mediaHtml = `<img src="${data.url}" alt="${data.title}" class="nasa-media" />`;
-      } else {
-        mediaHtml = `<iframe src="${data.url}" class="nasa-media" frameborder="0" allowfullscreen></iframe>`;
-      }
-
-      container.innerHTML = `
-        <div class="nasa-content">
-          ${mediaHtml}
-          <div class="nasa-info">
-            <span class="nasa-date">${data.date}</span>
-            <h4 class="nasa-title">${data.title}</h4>
-            <p class="nasa-explanation">${data.explanation}</p>
-            ${data.copyright ? `<span class="nasa-copyright">© ${data.copyright}</span>` : ''}
-          </div>
-        </div>
-      `;
-    })
-    .catch(err => {
-      console.error(err);
-      container.innerHTML = `
-        <div class="nasa-error" style="padding: 1rem; color: #ef4444; text-align: center;">
-          <h4 style="margin-bottom: 0.5rem;">Errore APOD</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">${err.message}</p>
-        </div>
-      `;
-    });
+  fetch(`https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=${today}`)
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(data => { if (data) renderApod(container, data); })
+    .catch(() => renderApod(container, FALLBACK));
 }
